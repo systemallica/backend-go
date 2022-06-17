@@ -1,0 +1,58 @@
+definitions:
+  rides.Ride:
+    properties:
+      created_at:
+        type: string
+      finished:
+        type: boolean
+      id:
+        type: integer
+      price:
+        type: integer
+      updated_at:
+        type: string
+      user_id:
+        type: string
+      vehicle_id:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /rides:
+    post:
+      consumes:
+      - application/json
+      description: create ride
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/rides.Ride'
+      summary: starts a ride.
+      tags:
+      - rides
+  /rides/:id/finish:
+    post:
+      consumes:
+      - application/json
+      description: finish ride
+      parameters:
+      - description: Ride ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/rides.Ride'
+      summary: finishes the ride that matches the given ID.
+      tags:
+      - rides
+swagger: "2.0"
