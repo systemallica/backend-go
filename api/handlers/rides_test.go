@@ -11,6 +11,7 @@ import (
 	"backend/rides"
 	"backend/utils"
 
+	"github.com/go-rel/rel"
 	"github.com/go-rel/reltest"
 	"github.com/stretchr/testify/assert"
 )
@@ -27,6 +28,15 @@ func TestStartRide(t *testing.T) {
 	)
 	req.Header.Add("Content-Type", "application/json")
 
+	repository.ExpectCount("rides", rel.Or(
+		rel.And(
+			rel.Eq("user_id", request.UserID), rel.Eq("finished", false),
+		),
+	),
+		rel.And(
+			rel.Eq("vehicle_id", request.VehicleID), rel.Eq("finished", false),
+		),
+	).Result(0)
 	repository.ExpectInsert().ForType("*rides.Ride")
 
 	handler.ServeHTTP(rr, req)
@@ -85,4 +95,36 @@ func TestStartRideBadRequestUser(t *testing.T) {
 	json.Unmarshal([]byte(rr.Body.String()), &resp)
 	assert.Equal(t, resp.StatusText, "Invalid request.")
 	assert.Equal(t, resp.ErrorText, "missing required UserID field.")
+}
+
+func TestStartRideAlreadyStarted(t *testing.T) {
+	var (
+		request    = handlers.RideRequest{UserID: "1", VehicleID: "1"}
+		body, _    = json.Marshal(request)
+		req, _     = http.NewRequest("POST", "/", bytes.NewBuffer(body))
+		rr         = httptest.NewRecorder()
+		repository = reltest.New()
+		service    = rides.New(repository)
+		handler    = handlers.NewRidesHandler(repository, service)
+	)
+	req.Header.Add("Content-Type", "application/json")
+
+	repository.ExpectCount("rides", rel.Or(
+		rel.And(
+			rel.Eq("user_id", request.UserID), rel.Eq("finished", false),
+		),
+	),
+		rel.And(
+			rel.Eq("vehicle_id", request.VehicleID), rel.Eq("finished", false),
+		),
+	).Result(1)
+
+	handler.ServeHTTP(rr, req)
+
+	assert.Equal(t, http.StatusInternalServerError, rr.Code)
+
+	var resp handlers.ErrResponse
+	json.Unmarshal([]byte(rr.Body.String()), &resp)
+	assert.Equal(t, resp.StatusText, "Error while starting ride.")
+	assert.Equal(t, resp.ErrorText, "A ride is already started for this vehicle or user")
 }

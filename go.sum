@@ -22,8 +22,6 @@ github.com/go-openapi/swag v0.19.5/go.mod h1:POnQmlKehdgb5mhVOsnJFsivZCEZ/vjK9gh
 github.com/go-openapi/swag v0.19.15/go.mod h1:QYRuS/SOXUCsnplDa677K7+DxSOj6IPNl/eQntq43wQ=
 github.com/go-openapi/swag v0.21.1 h1:wm0rhTb5z7qpJRHBdPOMuY4QjVUMbF6/kwoYeRAOrKU=
 github.com/go-openapi/swag v0.21.1/go.mod h1:QYRuS/SOXUCsnplDa677K7+DxSOj6IPNl/eQntq43wQ=
-github.com/go-rel/migration v0.2.1 h1:7msAEboglLZVKXsMuQ3kszfWPKAVR6sXnReVUOyEXrY=
-github.com/go-rel/migration v0.2.1/go.mod h1:/HWr0eHa+Pk99mQrDiSkTy5l+WNQDAmIJ4sbYOCEdzY=
 github.com/go-rel/postgres v0.7.0 h1:F/1oQAVJkD/YUOi8+4HDzf2I4uUMmeorujJRn0ee/S0=
 github.com/go-rel/postgres v0.7.0/go.mod h1:dsGQLtrOL6YdJP/BKL7vqTVQQiCCXT4fZP0NTCsy2JE=
 github.com/go-rel/primaryreplica v0.4.0 h1:lhU+4dh0/sDQEs602Chiz0SJDXewPU06baWQlx7oB3c=
@@ -31,7 +29,6 @@ github.com/go-rel/rel v0.33.1/go.mod h1:DhB9Xmt/ymaumJAB6Z3Kq+IybLwQhhrzr6ZLeXMy
 github.com/go-rel/rel v0.34.0/go.mod h1:YDHtnJhlaiSjANLGiZXvI57jg1amfpJSJlOimq6WJTE=
 github.com/go-rel/rel v0.35.0 h1:A+jyWX8m4PSkXeFC22zq1hUXoLs/tXeP8Oitc3ZMqTg=
 github.com/go-rel/rel v0.35.0/go.mod h1:mXRZv7sVwtc/ztcY6dgzE5RV5MC+4/2PHPQUBAGiUG8=
-github.com/go-rel/reltest v0.8.1/go.mod h1:ZGM+yKATZ1y46l3alApuUz9wu5o3twAmPfCVvJBjpF8=
 github.com/go-rel/reltest v0.9.0 h1:OTBY2dD/hNXaH5r1XXIHRdni6QGCmFaQm1pFAFkg1ok=
 github.com/go-rel/reltest v0.9.0/go.mod h1:Eu1JNASF6TfiktPlmvWEYHp+UejmGl9MmKRWieHxkXo=
 github.com/go-rel/sql v0.9.1 h1:2tHu4U4Bk1DWKvzsitwcvv1sk6aGcxPh3LYJXspgk8w=

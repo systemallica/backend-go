@@ -18,6 +18,7 @@ type Ride struct {
 var (
 	ErrRideUserIDBlank    = errors.New("UserID can't be blank")
 	ErrRideVehicleIDBlank = errors.New("VehicleID can't be blank")
+	ErrRideAlreadyStarted = errors.New("A ride is already started for this vehicle or user")
 )
 
 func (r Ride) Validate() error {

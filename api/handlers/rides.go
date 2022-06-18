@@ -69,7 +69,7 @@ func (r Rides) RideStartHandler(w http.ResponseWriter, req *http.Request) {
 	}
 
 	if err, savedRide := r.rides.StartRide(req.Context(), &ride); err != nil {
-		render.Render(w, req, ErrDB(err))
+		render.Render(w, req, ErrStartDB(err))
 		return
 	} else {
 		resp := &RideResponse{Ride: savedRide}

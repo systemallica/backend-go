@@ -17,6 +17,19 @@ func (c startRide) StartRide(ctx context.Context, ride *Ride) (error, *Ride) {
 		return err, nil
 	}
 
+	count, _ := c.repository.Count(ctx, "rides", rel.Or(
+		rel.And(
+			rel.Eq("user_id", ride.UserID), rel.Eq("finished", false),
+		),
+	),
+		rel.And(
+			rel.Eq("vehicle_id", ride.VehicleID), rel.Eq("finished", false),
+		),
+	)
+	if count != 0 {
+		return ErrRideAlreadyStarted, nil
+	}
+
 	ride.Price = utils.GetEnvAsInt("RIDE_INITIAL_PRICE", 18)
 
 	err := c.repository.Insert(ctx, ride)

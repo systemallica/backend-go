@@ -29,11 +29,19 @@ func ErrInvalidRequest(err error) render.Renderer {
 	}
 }
 
-func ErrDB(err error) render.Renderer {
+func ErrStartDB(err error) render.Renderer {
 	return &ErrResponse{
 		Err:            err,
 		HTTPStatusCode: 500,
 		StatusText:     "Error while starting ride.",
+		ErrorText:      err.Error(),
+	}
+}
+func ErrFindDB(err error) render.Renderer {
+	return &ErrResponse{
+		Err:            err,
+		HTTPStatusCode: 500,
+		StatusText:     "No ride matches the given ID.",
 		ErrorText:      err.Error(),
 	}
 }
