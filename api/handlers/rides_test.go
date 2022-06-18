@@ -3,15 +3,18 @@ package handlers_test
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"time"
 
 	"backend/api/handlers"
 	"backend/rides"
 	"backend/utils"
 
 	"github.com/go-rel/rel"
+	"github.com/go-rel/rel/where"
 	"github.com/go-rel/reltest"
 	"github.com/stretchr/testify/assert"
 )
@@ -127,4 +130,62 @@ func TestStartRideAlreadyStarted(t *testing.T) {
 	json.Unmarshal([]byte(rr.Body.String()), &resp)
 	assert.Equal(t, resp.StatusText, "Error while starting ride.")
 	assert.Equal(t, resp.ErrorText, "A ride is already started for this vehicle or user")
+}
+
+func TestFinishRide(t *testing.T) {
+	var (
+		rideID      = uint(1)
+		now         = time.Now()
+		startedRide = rides.Ride{ID: rideID, VehicleID: "1", UserID: "1", Price: 18, Finished: false, CreatedAt: now, UpdatedAt: now}
+		path        = fmt.Sprintf("/%d/finish", rideID)
+		req, _      = http.NewRequest("POST", path, nil)
+		rr          = httptest.NewRecorder()
+		repository  = reltest.New()
+		service     = rides.New(repository)
+		handler     = handlers.NewRidesHandler(repository, service)
+	)
+	req.Header.Add("Content-Type", "application/json")
+
+	repository.ExpectFind(where.Eq("id", "1")).Result(startedRide)
+	repository.ExpectCount("rides", rel.And(rel.Eq("id", rideID), rel.Eq("finished", true))).Result(0)
+	repository.ExpectUpdate().ForType("*rides.Ride")
+
+	handler.ServeHTTP(rr, req)
+
+	assert.Equal(t, http.StatusOK, rr.Code)
+
+	var ride rides.Ride
+	if err := json.NewDecoder(rr.Body).Decode(&ride); err != nil {
+		t.Errorf("Error decoding response body: %v", err)
+	}
+	assert.Greater(t, ride.Price, utils.GetEnvAsInt("RIDE_INITIAL_PRICE", 18))
+	assert.Less(t, ride.Price, 218)
+	assert.True(t, ride.Finished)
+}
+
+func TestFinishRideAlreadyFinished(t *testing.T) {
+	var (
+		rideID     = uint(1)
+		path       = fmt.Sprintf("/%d/finish", rideID)
+		req, _     = http.NewRequest("POST", path, nil)
+		rr         = httptest.NewRecorder()
+		repository = reltest.New()
+		service    = rides.New(repository)
+		handler    = handlers.NewRidesHandler(repository, service)
+	)
+	req.Header.Add("Content-Type", "application/json")
+
+	startedRide := rides.Ride{ID: rideID, VehicleID: "1", UserID: "1", Price: 18, Finished: false}
+	repository.ExpectFind(where.Eq("id", "1")).Result(startedRide)
+	repository.ExpectCount("rides", rel.And(rel.Eq("id", rideID), rel.Eq("finished", true))).Result(1)
+	repository.ExpectUpdate().ForType("*rides.Ride")
+
+	handler.ServeHTTP(rr, req)
+
+	assert.Equal(t, http.StatusInternalServerError, rr.Code)
+
+	var resp handlers.ErrResponse
+	json.Unmarshal([]byte(rr.Body.String()), &resp)
+	assert.Equal(t, resp.StatusText, "Error while finishing ride.")
+	assert.Equal(t, resp.ErrorText, "This ride is already finished")
 }
