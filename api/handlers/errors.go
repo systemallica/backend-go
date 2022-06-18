@@ -37,6 +37,16 @@ func ErrStartDB(err error) render.Renderer {
 		ErrorText:      err.Error(),
 	}
 }
+
+func ErrFinishDB(err error) render.Renderer {
+	return &ErrResponse{
+		Err:            err,
+		HTTPStatusCode: 500,
+		StatusText:     "Error while finishing ride.",
+		ErrorText:      err.Error(),
+	}
+}
+
 func ErrFindDB(err error) render.Renderer {
 	return &ErrResponse{
 		Err:            err,

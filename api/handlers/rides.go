@@ -2,14 +2,15 @@ package handlers
 
 import (
 	"errors"
-	"log"
 	"net/http"
+	"time"
 
 	"backend/rides"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/render"
 	"github.com/go-rel/rel"
+	"github.com/go-rel/rel/where"
 )
 
 type Rides struct {
@@ -89,7 +90,23 @@ func (r Rides) RideStartHandler(w http.ResponseWriter, req *http.Request) {
 // @Success 200 {object} rides.Ride
 // @Router /rides/:id/finish [post]
 func (r Rides) RideFinishHandler(w http.ResponseWriter, req *http.Request) {
-	log.Print(chi.URLParam(req, "id"))
+	rideID := chi.URLParam(req, "id")
+
+	var ride rides.Ride
+	if err := r.repository.Find(req.Context(), &ride, where.Eq("id", rideID)); err != nil {
+		render.Render(w, req, ErrFindDB(err))
+		return
+	}
+
+	if err, savedRide := r.rides.FinishRide(req.Context(), &ride, time.Now()); err != nil {
+		render.Render(w, req, ErrFinishDB(err))
+		return
+	} else {
+		resp := &RideResponse{Ride: savedRide}
+
+		render.Status(req, http.StatusOK)
+		render.Render(w, req, resp)
+	}
 }
 
 func NewRidesHandler(repository rel.Repository, rides rides.Service) Rides {
