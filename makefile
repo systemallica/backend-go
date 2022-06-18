@@ -9,3 +9,7 @@ docs:
 	swag init -d "cmd/server/,rides/,api/,api/handlers/"
 migrate: 
 	rel migrate
+format: 
+	goimports -w ./..
+lint:
+	golangci-lint run

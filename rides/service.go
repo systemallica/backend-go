@@ -19,7 +19,7 @@ type service struct {
 
 func New(repository rel.Repository) Service {
 	return service{
-		startRide: startRide{repository: repository},
+		startRide:  startRide{repository: repository},
 		finishRide: finishRide{repository: repository},
 	}
 }

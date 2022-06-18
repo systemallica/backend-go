@@ -16,9 +16,9 @@ type Ride struct {
 }
 
 var (
-	ErrRideUserIDBlank    = errors.New("UserID can't be blank")
-	ErrRideVehicleIDBlank = errors.New("VehicleID can't be blank")
-	ErrRideAlreadyStarted = errors.New("A ride is already started for this vehicle or user")
+	ErrRideUserIDBlank     = errors.New("UserID can't be blank")
+	ErrRideVehicleIDBlank  = errors.New("VehicleID can't be blank")
+	ErrRideAlreadyStarted  = errors.New("A ride is already started for this vehicle or user")
 	ErrRideAlreadyFinished = errors.New("This ride is already finished")
 )
 

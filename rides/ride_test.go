@@ -14,7 +14,7 @@ func TestRideValidation(t *testing.T) {
 	})
 
 	t.Run("UserID is blank", func(t *testing.T) {
-		ride.UserID ="1"
+		ride.UserID = "1"
 		assert.Equal(t, ErrRideVehicleIDBlank, ride.Validate())
 	})
 

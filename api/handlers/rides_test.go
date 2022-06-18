@@ -73,9 +73,10 @@ func TestStartRideBadRequestVehicle(t *testing.T) {
 	assert.Equal(t, http.StatusBadRequest, rr.Code)
 
 	var resp handlers.ErrResponse
-	json.Unmarshal([]byte(rr.Body.String()), &resp)
-	assert.Equal(t, resp.StatusText, "Invalid request.")
-	assert.Equal(t, resp.ErrorText, "missing required VehicleID field.")
+	if err := json.Unmarshal(rr.Body.Bytes(), &resp); err != nil {
+		assert.Equal(t, resp.StatusText, "Invalid request.")
+		assert.Equal(t, resp.ErrorText, "missing required VehicleID field.")
+	}
 }
 
 func TestStartRideBadRequestUser(t *testing.T) {
@@ -95,9 +96,10 @@ func TestStartRideBadRequestUser(t *testing.T) {
 	assert.Equal(t, http.StatusBadRequest, rr.Code)
 
 	var resp handlers.ErrResponse
-	json.Unmarshal([]byte(rr.Body.String()), &resp)
-	assert.Equal(t, resp.StatusText, "Invalid request.")
-	assert.Equal(t, resp.ErrorText, "missing required UserID field.")
+	if err := json.Unmarshal(rr.Body.Bytes(), &resp); err != nil {
+		assert.Equal(t, resp.StatusText, "Invalid request.")
+		assert.Equal(t, resp.ErrorText, "missing required UserID field.")
+	}
 }
 
 func TestStartRideAlreadyStarted(t *testing.T) {
@@ -127,9 +129,10 @@ func TestStartRideAlreadyStarted(t *testing.T) {
 	assert.Equal(t, http.StatusInternalServerError, rr.Code)
 
 	var resp handlers.ErrResponse
-	json.Unmarshal([]byte(rr.Body.String()), &resp)
-	assert.Equal(t, resp.StatusText, "Error while starting ride.")
-	assert.Equal(t, resp.ErrorText, "A ride is already started for this vehicle or user")
+	if err := json.Unmarshal(rr.Body.Bytes(), &resp); err != nil {
+		assert.Equal(t, resp.StatusText, "Error while starting ride.")
+		assert.Equal(t, resp.ErrorText, "A ride is already started for this vehicle or user")
+	}
 }
 
 func TestFinishRide(t *testing.T) {
@@ -185,7 +188,8 @@ func TestFinishRideAlreadyFinished(t *testing.T) {
 	assert.Equal(t, http.StatusInternalServerError, rr.Code)
 
 	var resp handlers.ErrResponse
-	json.Unmarshal([]byte(rr.Body.String()), &resp)
-	assert.Equal(t, resp.StatusText, "Error while finishing ride.")
-	assert.Equal(t, resp.ErrorText, "This ride is already finished")
+	if err := json.Unmarshal(rr.Body.Bytes(), &resp); err != nil {
+		assert.Equal(t, resp.StatusText, "Error while finishing ride.")
+		assert.Equal(t, resp.ErrorText, "This ride is already finished")
+	}
 }

@@ -2,47 +2,56 @@
 
 ## Features
 
-- Chi as HTTP/2 Go Web Framework
-- Endpoint to start a ride -> `POST /rides`
-- Endpoint to finish a ride ->  `POST /rides/{id}/finish`
+- Chi as HTTP/2 Go Web Framework.
+- Endpoint to start a ride -> `POST /rides`.
+- Endpoint to finish a ride -> `POST /rides/{id}/finish`.
 - Input validation:
-  - Do not start a ride if user_id or vehicle_id are not provided
+  - Do not start a ride if user_id or vehicle_id are not provided.
   - Do not start a ride if the user or vehicle have another ride ongoing.
   - Do not finish a ride if the ride is already finished.
-- Ride price calculation (initial unlocking price when the ride is started, plus the price per minute when it is finished)
-- API documentation with Swagger
-- Fully tested
-- ORM and DB migrations with go-rel
-- Data persistence in a Postgres database managed with Docker
-- Code live reload using Air
-- Code linting, formatting and testing on pre-commit
-- IDE configuration for Go in VS Code
+- Ride price calculation (initial unlocking price when the ride is started, plus the price per minute when it is finished).
+  - Prices are treated as integers to avoid problems with floating point numbers.
+- API documentation with Swagger.
+- Fully tested.
+- ORM and DB migrations with go-rel.
+- Data persistence in a Postgres database managed with Docker.
+- Code live reload using Air.
+- Code linting, formatting and testing on pre-commit.
+- IDE configuration for Go in VS Code.
 
 TODO:
+
 - Metrics
 
 ## Installation
+
 _Note: This document assumes that the application is running on a macOS machine._
 
 Pre-requisites:
+
 - Go 1.18+
 - docker
 
 Tools:
+
 - Swag: `go install github.com/swaggo/swag/cmd/swag@latest`
 - go-rel CLI:
+
 ```
 brew tap go-rel/tap
 brew install rel
 ```
 
 Dependencies needed for pre-commit(optional):
+
 - Linting: `brew install golangci-lint`
 - Imports: `go install golang.org/x/tools/cmd/goimports@latest`
 - Pre-commit itself: `brew install pre-commit`
 
 Other optional tools:
+
 - Air
+
 ## Running the application
 
 1. Copy the example environment variable to a .env file.
@@ -84,7 +93,7 @@ The [go-rel CLI](https://go-rel.github.io/migration/#running-migration) is neede
 
 ### swagger-ui
 
-The application has a swagger-ui interface. It is available at http://localhost:8080/swagger/index.html. 
+The application has a swagger-ui interface. It is available at http://localhost:8080/swagger/index.html.
 
 Every endpoint is configured using [Declarative Comments Format](https://github.com/swaggo/swag/blob/master/README.md#declarative-comments-format).
 
@@ -115,6 +124,8 @@ Inside the `.vscode` folder, there is a `settings.json` file. This file contains
 - we assume that the start/finish times are proper data
 - we assume that the user and vehicle ids are valid
 - a CI/CD pipeline should be implemented in the future
+- an error tracking tool(such as [Sentry](https://sentry.io/welcome/)) should be set up in the repo
+- a dependency management tool(such as [dependabot](https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/about-dependabot-version-updates)) should be set up in the repo
 
 ### branch convention
 
@@ -131,10 +142,14 @@ And finally there are `feature branches`, which are used to develop new features
 The commits have been made using the [conventional commits style](https://www.conventionalcommits.org/en/v1.0.0/)
 
 ## List of resources
+
 - [go-rel](https://go-rel.github.io/)
-- [Chi](https://github.com/go-chi/chi) 
+- [Chi](https://github.com/go-chi/chi)
 - [Go testing framework](https://golang.org/pkg/testing/)
 - [Testing in Go with Chi](https://www.newline.co/@kchan/testing-a-go-and-chi-restful-api-route-handlers-and-middleware-part-2--5efc9135)
+- [Rest API with Chi and Go](https://www.newline.co/@kchan/building-a-simple-restful-api-with-go-and-chi--5912c411)
+- [Dependency injection in Go](https://stackoverflow.com/questions/67944863/dependency-injection-in-go)
+- [Chi middlewares](https://github.com/go-chi/chi#middlewares)
 - [Mock](https://github.com/golang/mock)
 - [Spies](https://github.com/nyarly/spies)
 - [Using Mock for Golang testing](https://www.sobyte.net/post/2022-03/use-mock-to-test/)

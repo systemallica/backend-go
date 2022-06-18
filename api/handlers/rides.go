@@ -60,7 +60,9 @@ func (rd *RideResponse) Render(w http.ResponseWriter, r *http.Request) error {
 func (r Rides) RideStartHandler(w http.ResponseWriter, req *http.Request) {
 	data := &RideRequest{}
 	if err := render.Bind(req, data); err != nil {
-		render.Render(w, req, ErrInvalidRequest(err))
+		if err := render.Render(w, req, ErrInvalidRequest(err)); err != nil {
+			return
+		}
 		return
 	}
 
@@ -70,13 +72,17 @@ func (r Rides) RideStartHandler(w http.ResponseWriter, req *http.Request) {
 	}
 
 	if err, savedRide := r.rides.StartRide(req.Context(), &ride); err != nil {
-		render.Render(w, req, ErrStartDB(err))
+		if err := render.Render(w, req, ErrStartDB(err)); err != nil {
+			return
+		}
 		return
 	} else {
 		resp := &RideResponse{Ride: savedRide}
 
 		render.Status(req, http.StatusCreated)
-		render.Render(w, req, resp)
+		if err := render.Render(w, req, resp); err != nil {
+			return
+		}
 	}
 }
 
@@ -94,18 +100,24 @@ func (r Rides) RideFinishHandler(w http.ResponseWriter, req *http.Request) {
 
 	var ride rides.Ride
 	if err := r.repository.Find(req.Context(), &ride, where.Eq("id", rideID)); err != nil {
-		render.Render(w, req, ErrFindDB(err))
+		if err := render.Render(w, req, ErrFindDB(err)); err != nil {
+			return
+		}
 		return
 	}
 
 	if err, savedRide := r.rides.FinishRide(req.Context(), &ride, time.Now()); err != nil {
-		render.Render(w, req, ErrFinishDB(err))
+		if err := render.Render(w, req, ErrFinishDB(err)); err != nil {
+			return
+		}
 		return
 	} else {
 		resp := &RideResponse{Ride: savedRide}
 
 		render.Status(req, http.StatusOK)
-		render.Render(w, req, resp)
+		if err := render.Render(w, req, resp); err != nil {
+			return
+		}
 	}
 }
 
