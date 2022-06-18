@@ -29,6 +29,17 @@ const docTemplate = `{
                     "rides"
                 ],
                 "summary": "starts a ride.",
+                "parameters": [
+                    {
+                        "description": "Ride request parameters",
+                        "name": "id",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handlers.RideRequest"
+                        }
+                    }
+                ],
                 "responses": {
                     "201": {
                         "description": "Created",
@@ -73,6 +84,17 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "handlers.RideRequest": {
+            "type": "object",
+            "properties": {
+                "user_id": {
+                    "type": "string"
+                },
+                "vehicle_id": {
+                    "type": "string"
+                }
+            }
+        },
         "rides.Ride": {
             "type": "object",
             "properties": {

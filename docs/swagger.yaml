@@ -1,4 +1,11 @@
 definitions:
+  handlers.RideRequest:
+    properties:
+      user_id:
+        type: string
+      vehicle_id:
+        type: string
+    type: object
   rides.Ride:
     properties:
       created_at:
@@ -24,6 +31,13 @@ paths:
       consumes:
       - application/json
       description: create ride
+      parameters:
+      - description: Ride request parameters
+        in: body
+        name: id
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.RideRequest'
       produces:
       - application/json
       responses:
