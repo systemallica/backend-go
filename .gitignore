@@ -1,2 +1,5 @@
 INSTRUCTIONS.md
 .env
+bin/
+tmp/
+*.log
