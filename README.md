@@ -20,6 +20,7 @@
 - Code live reload using Air.
 - Code linting, formatting and testing on pre-commit.
 - IDE configuration for Go in VS Code.
+- Dependabot for dependency management.
 
 ## Installation
 
@@ -92,6 +93,7 @@ The [go-rel CLI](https://go-rel.github.io/migration/#running-migration) is neede
 ### Prometheus
 
 A Prometheus image has been included in the docker compose configuration to serve the Prometheus UI and browse the available metrics. The available metrics include:
+
 - The duration of the requests(with: code, handler, method).
 - The count of the requests(with: code, handler, method).
 - The size of the responses(with: code, handler, method).
@@ -133,7 +135,6 @@ Inside the `.vscode` folder, there is a `settings.json` file. This file contains
 - we assume that the user and vehicle ids are valid
 - a CI/CD pipeline should be implemented in the future
 - an error tracking tool(such as [Sentry](https://sentry.io/welcome/)) should be set up in the repo
-- a dependency management tool(such as [dependabot](https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/about-dependabot-version-updates)) should be set up in the repo
 
 ### branch convention
 
