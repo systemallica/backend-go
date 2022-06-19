@@ -22,6 +22,7 @@ func main() {
 	)
 	defer adapter.Close()
 
+	log.Printf("Server listening at %s", httpPort)
 	if err := http.ListenAndServe(fmt.Sprintf("localhost:%s", httpPort), r); err != http.ErrServerClosed && err != nil {
 		log.Fatalf("Error starting http server <%s>", err)
 	}
