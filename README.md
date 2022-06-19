@@ -5,6 +5,8 @@
 - Chi as HTTP/2 Go Web Framework.
 - Endpoint to start a ride -> `POST /rides`.
 - Endpoint to finish a ride -> `POST /rides/{id}/finish`.
+- Endpoint with exposed application metrics in the Prometheus text format -> `GET /metrics`.
+- Prometheus service to browse metrics -> `http://localhost:9090/graph`.
 - Input validation:
   - Do not start a ride if user_id or vehicle_id are not provided.
   - Do not start a ride if the user or vehicle have another ride ongoing.
@@ -18,10 +20,6 @@
 - Code live reload using Air.
 - Code linting, formatting and testing on pre-commit.
 - IDE configuration for Go in VS Code.
-
-TODO:
-
-- Metrics
 
 ## Installation
 
@@ -90,6 +88,16 @@ The **repository tests** check the state of the database after each operation, f
 [go-rel](https://go-rel.github.io/) is a ORM and DB migration framework for Go. It was chosen because it was built with testability in mind, and we do love tests!
 
 The [go-rel CLI](https://go-rel.github.io/migration/#running-migration) is needed to run the migrations placed in `/db/migrations/`.
+
+### Prometheus
+
+A Prometheus image has been included in the docker compose configuration to serve the Prometheus UI and browse the available metrics. The available metrics include:
+- The duration of the requests(with: code, handler, method).
+- The count of the requests(with: code, handler, method).
+- The size of the responses(with: code, handler, method).
+- The number requests being handled concurrently at a given time a.k.a inflight requests (with: handler).
+
+Metrics such as the average duration of the requests can be derived from the metrics above.
 
 ### swagger-ui
 

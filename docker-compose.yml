@@ -11,6 +11,15 @@ services:
       - '${POSTGRESQL_PORT}:5432'
     volumes: 
       - db:/var/lib/postgresql/data
+  prometheus:
+    image: prom/prometheus:latest
+    restart: always
+    ports:
+      - 9090:9090
+    volumes:
+      - type: bind
+        source: ./prometheus.yml
+        target: /etc/prometheus/prometheus.yml
 volumes:
   db:
     driver: local
