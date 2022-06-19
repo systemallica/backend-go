@@ -7,14 +7,14 @@
 - Endpoint to finish a ride -> `POST /rides/{id}/finish`.
 - Endpoint with exposed application metrics in the Prometheus text format -> `GET /metrics`.
 - Prometheus service to browse metrics -> `http://localhost:9090/graph`.
-- Input validation:
+- Input/state validation:
   - Do not start a ride if user_id or vehicle_id are not provided.
   - Do not start a ride if the user or vehicle have another ride ongoing.
   - Do not finish a ride if the ride is already finished.
 - Ride price calculation (initial unlocking price when the ride is started, plus the price per minute when it is finished).
   - Prices are treated as integers to avoid problems with floating point numbers.
 - API documentation with Swagger.
-- Fully tested.
+- HTTP and service tests.
 - ORM and DB migrations with go-rel.
 - Data persistence in a Postgres database managed with Docker.
 - Code live reload using Air.
@@ -68,15 +68,55 @@ Just run `make build`. The output files will be located at `./bin/server`
 
 ## Architecture
 
+```
+├── api
+│   ├── handlers
+│   │   ├── errors.go
+│   │   └── rides.go
+│   └── http.go
+├── bin
+│   └── server
+├── cmd
+│   └── server
+│       └── main.go
+├── db
+│   └── migrations
+│       └── [migration file]
+├── docs
+│   └── docs.go
+├── rides
+│   ├── finish.go
+│   ├── ride.go
+│   ├── service.go
+│   └── start.go
+└── utils
+│   └── utils.go
+└── [other domain]
+    ├── [entity a].go
+    ├── [business logic].go
+    └── service.go
+```
+
+The project follows some clear architecture principles that allow for a scalable and maintainable application. The architecture is modular, with loosely coupled dependencies separated by domain. In the case of our application the only domain folder is `rides`. When the application grows we could have other domains such as `users` or `vehicles`.
+
+This `rides` domain folder contains the service, the use cases and the entity struct, so that this part of the application is loosely coupled(there are no shared components with other domain areas). This prevents cyclic dependencies and makes it easier to test the application.
+
+We also have the principle of dependency inversion, which means that the application code should not depend on the infrastructure of choice. As we are making use of `go-rel` as ORM, we do not depend on the specific implementation of a DB to access the data(we could switch postgresql by sqlite and there would be no need to change the code). 
+
+In addition, by defining the **service** interface, we ensure that we are also not tied to where the data is coming from. For example, if we would like store data in a redis DB, we would only have to change the implementation of the service, but the other parts of the application which use the service would not need to change, as the interface would not change.
+
 ## Testing
 
-The code is fully tested using the [Go testing framework](https://golang.org/pkg/testing/) and the testify package for assertions.
+The code is tested using the [Go testing framework](https://golang.org/pkg/testing/) and the testify package for assertions.
 
-Two types of tests have been written: handler tests and repository tests.
+Two types of tests have been written: handler tests and service tests.
 
 The **handler tests** check that the response returned by our server corresponds to what is expected in each case. They also validate the response for wrong inputs or wrong states(e.g. trying to finish a ride which is already finished).
 
-The **repository tests** check the state of the database after each operation, for example they check if the database is correctly updated when a ride is started or finished. They also check for expected error messages if invalid operations are performed(e.g. trying to finish a ride that does not exist).
+The **service tests** check that our business logic is working as intended. They also check the state of the database after each operation. For example they check:
+- if the total ride price is calculated correctly.
+- if the database is correctly updated when a ride is started or finished. 
+- expected error messages if invalid operations are performed(e.g. trying to finish a ride that does not exist).
 
 ## Tools & settings
 
