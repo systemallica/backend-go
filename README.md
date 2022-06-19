@@ -162,3 +162,6 @@ The commits have been made using the [conventional commits style](https://www.co
 - [pre-commit hooks for Go](https://github.com/dnephin/pre-commit-golang)
 - [conventional commits style](https://www.conventionalcommits.org/en/v1.0.0/)
 - [Trunk-based development](https://www.atlassian.com/continuous-delivery/continuous-integration/trunk-based-development)
+- [go-metrics](https://github.com/slok/go-http-metrics)
+- [prometheus](https://prometheus.io/)
+- [The RED method](https://www.weave.works/blog/the-red-method-key-metrics-for-microservices-architecture/)
