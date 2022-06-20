@@ -54,7 +54,7 @@ func (rd *RideResponse) Render(w http.ResponseWriter, r *http.Request) error {
 // @Tags rides
 // @Accept json
 // @Produce json
-// @Param id body RideRequest true "Ride request parameters"
+// @Param params body RideRequest true "Ride request parameters"
 // @Success 201 {object} rides.Ride
 // @Router /rides [post]
 func (r Rides) RideStartHandler(w http.ResponseWriter, req *http.Request) {

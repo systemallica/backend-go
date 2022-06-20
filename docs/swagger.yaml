@@ -34,7 +34,7 @@ paths:
       parameters:
       - description: Ride request parameters
         in: body
-        name: id
+        name: params
         required: true
         schema:
           $ref: '#/definitions/handlers.RideRequest'

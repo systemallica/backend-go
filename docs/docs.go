@@ -32,7 +32,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "description": "Ride request parameters",
-                        "name": "id",
+                        "name": "params",
                         "in": "body",
                         "required": true,
                         "schema": {
