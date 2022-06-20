@@ -31,13 +31,9 @@ func TestStartRide(t *testing.T) {
 	)
 	req.Header.Add("Content-Type", "application/json")
 
-	repository.ExpectCount("rides", rel.Or(
-		rel.And(
-			rel.Eq("user_id", request.UserID), rel.Eq("finished", false),
-		),
-	),
-		rel.And(
-			rel.Eq("vehicle_id", request.VehicleID), rel.Eq("finished", false),
+	repository.ExpectCount("rides",
+		rel.Eq("finished", false).And(
+			rel.Eq("user_id", request.UserID).OrEq("vehicle_id", request.VehicleID),
 		),
 	).Result(0)
 	repository.ExpectInsert().ForType("*rides.Ride")
@@ -114,13 +110,9 @@ func TestStartRideAlreadyStarted(t *testing.T) {
 	)
 	req.Header.Add("Content-Type", "application/json")
 
-	repository.ExpectCount("rides", rel.Or(
-		rel.And(
-			rel.Eq("user_id", request.UserID), rel.Eq("finished", false),
-		),
-	),
-		rel.And(
-			rel.Eq("vehicle_id", request.VehicleID), rel.Eq("finished", false),
+	repository.ExpectCount("rides",
+		rel.Eq("finished", false).And(
+			rel.Eq("user_id", request.UserID).OrEq("vehicle_id", request.VehicleID),
 		),
 	).Result(1)
 

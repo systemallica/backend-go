@@ -17,13 +17,9 @@ func (c startRide) StartRide(ctx context.Context, ride *Ride) (error, *Ride) {
 		return err, nil
 	}
 
-	count, _ := c.repository.Count(ctx, "rides", rel.Or(
-		rel.And(
-			rel.Eq("user_id", ride.UserID), rel.Eq("finished", false),
-		),
-	),
-		rel.And(
-			rel.Eq("vehicle_id", ride.VehicleID), rel.Eq("finished", false),
+	count, _ := c.repository.Count(ctx, "rides",
+		rel.Eq("finished", false).And(
+			rel.Eq("user_id", ride.UserID).OrEq("vehicle_id", ride.VehicleID),
 		),
 	)
 	if count != 0 {

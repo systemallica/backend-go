@@ -17,13 +17,9 @@ func TestStart(t *testing.T) {
 		ride       = Ride{UserID: "1", VehicleID: "1"}
 	)
 
-	repository.ExpectCount("rides", rel.Or(
-		rel.And(
-			rel.Eq("user_id", ride.UserID), rel.Eq("finished", false),
-		),
-	),
-		rel.And(
-			rel.Eq("vehicle_id", ride.VehicleID), rel.Eq("finished", false),
+	repository.ExpectCount("rides",
+		rel.Eq("finished", false).And(
+			rel.Eq("user_id", ride.UserID).OrEq("vehicle_id", ride.VehicleID),
 		),
 	).Result(0)
 
@@ -75,13 +71,9 @@ func TestStartAnotherRideAlreadyStarted(t *testing.T) {
 		service    = New(repository)
 		ride       = Ride{UserID: "2", VehicleID: "2"}
 	)
-	repository.ExpectCount("rides", rel.Or(
-		rel.And(
-			rel.Eq("user_id", ride.UserID), rel.Eq("finished", false),
-		),
-	),
-		rel.And(
-			rel.Eq("vehicle_id", ride.VehicleID), rel.Eq("finished", false),
+	repository.ExpectCount("rides",
+		rel.Eq("finished", false).And(
+			rel.Eq("user_id", ride.UserID).OrEq("vehicle_id", ride.VehicleID),
 		),
 	).Result(1)
 
