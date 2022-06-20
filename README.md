@@ -1,5 +1,7 @@
 # Backend implementation in Go
 
+This project implements a small backend server to manage starting and finishing rides, as well as serving metrics.
+
 ## Features
 
 - Chi as HTTP/2 Go Web Framework.
@@ -11,6 +13,8 @@
   - Do not start a ride if user_id or vehicle_id are not provided.
   - Do not start a ride if the user or vehicle have another ride ongoing.
   - Do not finish a ride if the ride is already finished.
+![validation](./static/img/validation.png)
+
 - Ride price calculation (initial unlocking price when the ride is started, plus the price per minute when it is finished).
   - Prices are treated as integers to avoid problems with floating point numbers.
 - API documentation with Swagger.
@@ -33,6 +37,8 @@ Pre-requisites:
 
 Tools:
 
+The following tools are required to generate the documentation and run the migrations.
+
 - Swag: `go install github.com/swaggo/swag/cmd/swag@latest`
 - go-rel CLI:
 
@@ -49,12 +55,12 @@ Dependencies needed for pre-commit(optional):
 
 Other optional tools:
 
-- Air
+- Air: `go install github.com/cosmtrek/air@latest`
 
 ## Running the application
 
-1. Copy the example environment variable to a .env file.
-2. Start the Postgres DB with docker: `docker compose up -d`.
+1. Copy the example environment variables files `.env.example` to a `.env` file.
+2. Start the docker services with: `docker compose up -d`.
 3. Run the migrations: `rel migrate`.
 4. Start the application:
    1. If you installed air: `air`
@@ -97,7 +103,7 @@ Just run `make build`. The output files will be located at `./bin/server`
     └── service.go
 ```
 
-The project follows some clear architecture principles that allow for a scalable and maintainable application. The architecture is modular, with loosely coupled dependencies separated by domain. In the case of our application the only domain folder is `rides`. When the application grows we could have other domains such as `users` or `vehicles`.
+The project follows some clean architecture principles that allow for a scalable and maintainable application. The architecture is modular, with loosely coupled dependencies separated by domain. In the case of our application the only domain folder is `rides`. When the application grows we could have other domains such as `users` or `vehicles`.
 
 This `rides` domain folder contains the service, the use cases and the entity struct, so that this part of the application is loosely coupled(there are no shared components with other domain areas). This prevents cyclic dependencies and makes it easier to test the application.
 
@@ -130,6 +136,9 @@ The **service tests** check that our business logic is working as intended. They
 
 The [go-rel CLI](https://go-rel.github.io/migration/#running-migration) is needed to run the migrations placed in `/db/migrations/`.
 
+![migrate](./static/img/migrate.png)
+![rollback](./static/img/rollback.png)
+
 ### Prometheus
 
 A Prometheus image has been included in the docker compose configuration to serve the Prometheus UI and browse the available metrics. The available metrics include:
@@ -141,6 +150,15 @@ A Prometheus image has been included in the docker compose configuration to serv
 
 Metrics such as the average duration of the requests can be derived from the metrics above.
 
+Here is a sample of the recorder metrics for the `/rides` endpoint:
+![metrics](./static/img/metrics.png)
+
+Average response time by endpoint:
+![avg](./static/img/avg.png)
+
+90 percentile of a handler response time:
+![histogram](./static/img/histogram.png)
+
 ### swagger-ui
 
 The application has a swagger-ui interface. It is available at http://localhost:8080/swagger/index.html.
@@ -151,15 +169,22 @@ We are using [Swag](https://github.com/swaggo/swag) to generate and serve the AP
 
 The documentation is automatically generated from the comments on each endpoint when the `swag init -d "cmd/server/,rides/,api/,api/handlers/"` command is ran.
 
+![swagger](./static/img/swagger.png)
+
 ### pre-commit
 
 [pre-commit](https://pre-commit.com) is a tool that allows to perform operations before the commit is made by making use of git hooks. Here it is used for linting, formatting and testing the code. If any of the checks fails, the commit is aborted.
 
 We are using a set of hooks for Go defined [here](https://github.com/dnephin/pre-commit-golang).
 
+![precommit](./static/img/precommit.png)
+
+
 ### air (live reload)
 
 [Air](https://github.com/cosmtrek/air) is a really simple tool which provides live reloading of the project whenever the code changes. The configuration can be found in `.air.toml`.
+
+![air](./static/img/air.png)
 
 ### makefile
 
