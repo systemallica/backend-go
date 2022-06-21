@@ -1,3 +1,4 @@
+basePath: /
 definitions:
   handlers.RideRequest:
     properties:
@@ -23,8 +24,17 @@ definitions:
       vehicle_id:
         type: string
     type: object
+host: localhost:8080
 info:
-  contact: {}
+  contact:
+    email: andres@reveronmolina.me
+    name: systemallica
+    url: http://www.andres.reveronmolina.me
+  description: This is a basic Rides API using Chi and go-rel.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: Rides Swagger API
 paths:
   /rides:
     post:
@@ -69,4 +79,7 @@ paths:
       summary: finishes the ride that matches the given ID.
       tags:
       - rides
+schemes:
+- http
+- https
 swagger: "2.0"

@@ -1,8 +1,24 @@
 {
+    "schemes": [
+        "http",
+        "https"
+    ],
     "swagger": "2.0",
     "info": {
-        "contact": {}
+        "description": "This is a basic Rides API using Chi and go-rel.",
+        "title": "Rides Swagger API",
+        "contact": {
+            "name": "systemallica",
+            "url": "http://www.andres.reveronmolina.me",
+            "email": "andres@reveronmolina.me"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        }
     },
+    "host": "localhost:8080",
+    "basePath": "/",
     "paths": {
         "/rides": {
             "post": {
