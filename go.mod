@@ -12,7 +12,7 @@ require (
 	github.com/prometheus/client_golang v1.12.2
 	github.com/slok/go-http-metrics v0.10.0
 	github.com/stretchr/testify v1.7.5
-	github.com/swaggo/http-swagger v1.3.0
+	github.com/swaggo/http-swagger v1.3.1
 	github.com/swaggo/swag v1.8.3
 )
 
