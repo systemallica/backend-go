@@ -8,7 +8,7 @@ require (
 	github.com/go-rel/postgres v0.7.0
 	github.com/go-rel/rel v0.36.0
 	github.com/go-rel/reltest v0.9.0
-	github.com/lib/pq v1.10.6
+	github.com/lib/pq v1.10.7
 	github.com/prometheus/client_golang v1.12.2
 	github.com/slok/go-http-metrics v0.10.0
 	github.com/stretchr/testify v1.7.5
