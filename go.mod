@@ -3,7 +3,7 @@ module backend
 go 1.18
 
 require (
-	github.com/go-chi/chi/v5 v5.0.7
+	github.com/go-chi/chi/v5 v5.0.8
 	github.com/go-chi/render v1.0.1
 	github.com/go-rel/postgres v0.7.0
 	github.com/go-rel/rel v0.36.0
